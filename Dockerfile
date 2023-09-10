@@ -1,9 +1,16 @@
- FROM golang:1.19.13-alpine3.17
+ FROM golang:1.16 AS builder
 
- WORKDIR /usr/src/app
+ WORKDIR /app
 
  COPY hello.go .
 
  RUN go build hello.go
+
+
+FROM scratch
+
+WORKDIR /app
+
+COPY --from=builder /app/hello .
 
 CMD ["./hello"]
